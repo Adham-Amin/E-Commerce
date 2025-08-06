@@ -7,6 +7,7 @@ environment:
   sdk: ^3.3.4
 
 dependencies:
+  animated_snack_bar: ^0.4.0
   auto_size_text: null
   cached_network_image: null
   carousel_slider_plus: null
@@ -15,10 +16,13 @@ dependencies:
   dio: ^5.8.0+1
   flutter:
     sdk: flutter
+  flutter_bloc: ^9.1.1
   flutter_native_splash: null
   flutter_screenutil: null
   flutter_slidable: null
   flutter_svg: null
+  get_it: ^8.2.0
+  lottie: ^3.3.1
   pretty_dio_logger: ^1.4.0
   readmore: null
   smooth_page_indicator: null
@@ -35,6 +39,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/svg_images/
+    - assets/lottie/
 
   fonts:
     - family: Poppins

@@ -2,6 +2,7 @@ const String imagePath = "assets/images";
 const String jsonPath = "assets/json";
 const String iconsPath = "assets/icons";
 const String svgPath = "assets/svg_images";
+const String lottiePath = "assets/lottie";
 
 abstract class ImageAssets {
   static const String routeLogo = "$imagePath/splash_logo.png";
@@ -16,6 +17,10 @@ abstract class ImageAssets {
   static const String carouselSlider3 = "$imagePath/CarouselSlider3.png";
   static const String brandHomeImage = "$imagePath/brands_section_image.png";
   static const String productImage = "$imagePath/product_image.png";
+  
+  
+  static const String loadingLottie = "$lottiePath/Loading_lottie.json";
+
 
   static const String rate = "$imagePath/rate.png";
 
