@@ -13,8 +13,8 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CategoryEntityAdapter());
   Hive.registerAdapter(ProductsEntityAdapter());
-  await Hive.openBox('categories');
-  await Hive.openBox('products');
+  await Hive.openBox<CategoryEntity>('categories');
+  await Hive.openBox<ProductsEntity>('products');
   serverLocator();
   await SharedPreferencesService.init();
 

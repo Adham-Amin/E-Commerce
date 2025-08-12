@@ -10,13 +10,13 @@ abstract class HomeLocalDataSource {
 class HomeLocalDataSourceImpl implements HomeLocalDataSource {
   @override
   Future<List<CategoryEntity>> getCategories() async {
-    var box = await Hive.openBox<CategoryEntity>('categories');
+    var box = Hive.box<CategoryEntity>('categories');
     return box.values.toList();
   }
 
   @override
   Future<List<ProductsEntity>> getProducts() async {
-    var box = await Hive.openBox<ProductsEntity>('products');
+    var box = Hive.box<ProductsEntity>('products');
     return box.values.toList();
   }
 }

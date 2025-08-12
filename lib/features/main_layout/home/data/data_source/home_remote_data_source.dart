@@ -18,7 +18,7 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   Future<List<CategoryEntity>> getCategories() async {
     var response = await apiService.get(endPoint: 'categories');
     var categories = CategoriesResponse.fromJson(response).toEntities();
-    Hive.box('categories').addAll(categories);
+    await Hive.box<CategoryEntity>('categories').addAll(categories);
     return categories;
   }
 
@@ -26,7 +26,7 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   Future<List<ProductsEntity>> getProducts() async {
     var response = await apiService.get(endPoint: 'products');
     var products = ProductsResponse.fromJson(response).toEntities();
-    Hive.box('products').addAll(products);
+    await Hive.box<ProductsEntity>('products').addAll(products);
     return products;
   }
 }
