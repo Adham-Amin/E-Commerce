@@ -17,10 +17,8 @@ abstract class ImageAssets {
   static const String carouselSlider3 = "$imagePath/CarouselSlider3.png";
   static const String brandHomeImage = "$imagePath/brands_section_image.png";
   static const String productImage = "$imagePath/product_image.png";
-  
-  
-  static const String loadingLottie = "$lottiePath/Loading_lottie.json";
 
+  static const String loadingLottie = "$lottiePath/Loading_lottie.json";
 
   static const String rate = "$imagePath/rate.png";
 
@@ -30,7 +28,7 @@ abstract class ImageAssets {
   static const String searchIcon = "$imagePath/search.png";
 }
 
-class SvgAssets{
+class SvgAssets {
   static const String routeLogo = "$svgPath/route.svg";
   static const String eye = "$svgPath/Eye.svg";
   static const String edit = "$svgPath/edit (1) 5.svg";
@@ -56,8 +54,6 @@ abstract class IconsAssets {
   static String get icHeart => _icHeart;
   static String get icClickedHeart => _icClickedHeart;
 }
-
-
 
 class JsonAssets {
   static const String loading = "$jsonPath/loading.json";

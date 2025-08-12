@@ -8,7 +8,7 @@ class CustomTextWgt extends StatelessWidget {
       super.key,
       this.color,
       this.fontWeight,
-      this.textStyle ,
+      this.textStyle,
       required this.data});
 
   final String data;
@@ -16,14 +16,12 @@ class CustomTextWgt extends StatelessWidget {
   final double? fontSize;
   final int? maxLines;
   final FontWeight? fontWeight;
-  final TextStyle? textStyle ;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
     return AutoSizeText(
-      
       data,
-      
       softWrap: true,
       overflow: TextOverflow.ellipsis,
       maxLines: maxLines,

@@ -9,7 +9,6 @@ abstract class AuthRemoteDataSource {
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-
   final ApiService apiService;
   AuthRemoteDataSourceImpl({required this.apiService});
 

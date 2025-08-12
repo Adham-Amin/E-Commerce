@@ -17,10 +17,6 @@ class SharedPreferencesService {
     return _prefs?.getString('token');
   }
 
-  Future clearToken() async {
-    await _prefs?.remove('token');
-  }
-
   Future setUser(UserInfo user) async {
     await _prefs?.setString('user', jsonEncode(user.toJson()));
   }
@@ -31,5 +27,10 @@ class SharedPreferencesService {
       return UserInfo.fromJson(jsonDecode(user));
     }
     return null;
+  }
+
+  Future clearUserData() async {
+    await _prefs?.remove('user');
+    await _prefs?.remove('token');
   }
 }

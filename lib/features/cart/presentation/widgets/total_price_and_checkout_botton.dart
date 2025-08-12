@@ -23,7 +23,7 @@ class TotalPriceAndCheckoutBotton extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: getMediumStyle(
-                color: ColorManager.textColor.withValues(alpha:0.6),
+                color: ColorManager.textColor.withValues(alpha: 0.6),
                 fontSize: AppSize.s18.sp,
               ),
             ),

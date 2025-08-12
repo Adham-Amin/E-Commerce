@@ -37,7 +37,6 @@ class _HeartButtonState extends State<HeartButton> {
         child: Padding(
             padding: const EdgeInsets.all(6),
             child: ImageIcon(
-              
               AssetImage(heartIcon),
               color: ColorManager.primary,
             )),

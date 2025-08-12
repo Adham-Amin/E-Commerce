@@ -6,7 +6,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../../core/resources/color_manager.dart';
 
 class ProductSlider extends StatefulWidget {
-  const ProductSlider({super.key, required this.items, required this.initialIndex});
+  const ProductSlider(
+      {super.key, required this.items, required this.initialIndex});
   final List<Widget> items;
   final int initialIndex;
 
@@ -33,7 +34,7 @@ class _ProductSliderState extends State<ProductSlider> {
           controller: _controller,
           items: widget.items,
           options: CarouselOptions(
-            aspectRatio: 199.w/150.h,
+            aspectRatio: 199.w / 150.h,
             initialPage: widget.initialIndex,
             enlargeCenterPage: true,
             viewportFraction: 1,

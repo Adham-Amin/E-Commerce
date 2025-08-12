@@ -1,14 +1,20 @@
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/core/services/service_locator.dart';
 import 'package:ecommerce_app/core/services/shared_preferences_service.dart';
+import 'package:ecommerce_app/features/main_layout/home/domain/entities/category_entity.dart';
+import 'package:ecommerce_app/features/main_layout/home/domain/entities/products_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
 import 'core/routes_manager/route_generator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Hive.initFlutter();
+  Hive.registerAdapter(CategoryEntityAdapter());
+  Hive.registerAdapter(ProductsEntityAdapter());
+  await Hive.openBox('categories');
+  await Hive.openBox('products');
   serverLocator();
   await SharedPreferencesService.init();
 

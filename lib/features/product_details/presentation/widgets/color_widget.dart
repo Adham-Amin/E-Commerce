@@ -18,8 +18,13 @@ class ColorItem extends StatelessWidget {
       radius: 20.r,
       backgroundColor: color,
       child: Align(
-        alignment: Alignment.center,
-          child: Icon(Icons.check , color: index == selectedIndex ? ColorManager.white : Colors.transparent,)),
+          alignment: Alignment.center,
+          child: Icon(
+            Icons.check,
+            color: index == selectedIndex
+                ? ColorManager.white
+                : Colors.transparent,
+          )),
     );
   }
 }

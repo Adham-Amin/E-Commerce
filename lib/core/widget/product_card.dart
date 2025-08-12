@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ProductCard extends StatelessWidget {
   final String image;
   final String title;
-  final double price;
+  final int price;
   final String description;
   final double priceBeforeDiscound;
   final double rating;
@@ -80,14 +80,14 @@ class ProductCard extends StatelessWidget {
                     height: height,
                     child: ClipRRect(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24.r),
-                        topRight: Radius.circular(24.r),
+                        topLeft: Radius.circular(26.r),
+                        topRight: Radius.circular(26.r),
                       ),
                       child: AspectRatio(
                         aspectRatio: 16 / 9,
-                        child: Image.asset(
+                        child: Image.network(
                           image,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                         ),
                       ),
                     ),
@@ -131,19 +131,20 @@ class ProductCard extends StatelessWidget {
                   children: [
                     Text(
                       truncateTitle(title),
+                      maxLines: 2,
                       style: getMediumStyle(
                         color: ColorManager.primary,
                         fontSize: 16.sp,
                       ),
                     ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      truncateTitle(description),
-                      style: getRegularStyle(
-                        color: ColorManager.primary,
-                        fontSize: 14.sp,
-                      ),
-                    ),
+                     Expanded(child: SizedBox(height: 8.h)),
+                    // Text(
+                    //   truncateTitle(description),
+                    //   style: getRegularStyle(
+                    //     color: ColorManager.primary,
+                    //     fontSize: 14.sp,
+                    //   ),
+                    // ),
                     SizedBox(height: 8.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

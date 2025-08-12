@@ -6,7 +6,7 @@ import '../../../../core/resources/color_manager.dart';
 import '../../../../core/resources/styles_manager.dart';
 
 class ProductDescription extends StatelessWidget {
-  const ProductDescription({super.key , required this.productDescription});
+  const ProductDescription({super.key, required this.productDescription});
   final String productDescription;
 
   @override
@@ -23,9 +23,9 @@ class ProductDescription extends StatelessWidget {
           height: 8.h,
         ),
         ReadMoreText(
-        productDescription,
+          productDescription,
           style: getMediumStyle(
-              color: ColorManager.appBarTitleColor.withValues(alpha: .6))
+                  color: ColorManager.appBarTitleColor.withValues(alpha: .6))
               .copyWith(fontSize: 18.sp),
           trimExpandedText: ' Read Less',
           trimCollapsedText: ' Read More',
@@ -33,7 +33,9 @@ class ProductDescription extends StatelessWidget {
           trimMode: TrimMode.Line,
           colorClickableText: ColorManager.appBarTitleColor,
         ),
-        SizedBox(height: 16.h,),
+        SizedBox(
+          height: 16.h,
+        ),
       ],
     );
   }

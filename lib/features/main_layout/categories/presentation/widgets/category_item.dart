@@ -21,7 +21,7 @@ class CategoryItem extends StatelessWidget {
       onTap: () => onItemClick(index),
       child: Container(
         // Set background color based on selection
-        color: isSelected?ColorManager.white:Colors.transparent,
+        color: isSelected ? ColorManager.white : Colors.transparent,
         padding: const EdgeInsets.all(AppPadding.p8),
         child: Row(
           children: [

@@ -27,7 +27,9 @@ class BuildTextField extends StatefulWidget {
     this.validation,
     this.onTap,
     this.maxLines,
-    this.prefixIcon, this.borderBackgroundColor, this.suffixIcon,
+    this.prefixIcon,
+    this.borderBackgroundColor,
+    this.suffixIcon,
   });
 
   final TextEditingController? controller;
@@ -65,8 +67,7 @@ class _BuildTextFieldState extends State<BuildTextField> {
       children: [
         widget.label != null
             ? Padding(
-                padding: const EdgeInsets.only(
-                     top: AppPadding.p2),
+                padding: const EdgeInsets.only(top: AppPadding.p2),
                 child: Text(
                   widget.label!,
                   style: widget.labelTextStyle ??
@@ -78,11 +79,12 @@ class _BuildTextFieldState extends State<BuildTextField> {
         Container(
           margin: const EdgeInsets.only(top: AppMargin.m5),
           decoration: BoxDecoration(
-            color: widget.backgroundColor ??
-                ColorManager.darkGrey.withValues(alpha: .15),
-            borderRadius: BorderRadius.circular(AppSize.s8),
-            border: Border.all(color: widget.borderBackgroundColor ?? ColorManager.transparent )
-          ),
+              color: widget.backgroundColor ??
+                  ColorManager.darkGrey.withValues(alpha: .15),
+              borderRadius: BorderRadius.circular(AppSize.s8),
+              border: Border.all(
+                  color: widget.borderBackgroundColor ??
+                      ColorManager.transparent)),
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: TextFormField(
             maxLines: widget.maxLines ?? 1,

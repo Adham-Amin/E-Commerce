@@ -20,10 +20,7 @@ class SizeWidget extends StatelessWidget {
       backgroundColor:
           index == selectedIndex ? ColorManager.primary : Colors.transparent,
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 9.w,
-          vertical: 9.h
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 9.w, vertical: 9.h),
         child: Text(
           '$sizeNumber',
           style: getMediumStyle(

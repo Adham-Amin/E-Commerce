@@ -1,10 +1,15 @@
 import 'package:ecommerce_app/core/resources/assets_manager.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
+import 'package:ecommerce_app/core/services/service_locator.dart';
 import 'package:ecommerce_app/core/widget/home_screen_app_bar.dart';
 import 'package:ecommerce_app/features/main_layout/categories/presentation/categories_tab.dart';
 import 'package:ecommerce_app/features/main_layout/favourite/presentation/favourite_screen.dart';
+import 'package:ecommerce_app/features/main_layout/home/domain/repos/home_repo.dart';
+import 'package:ecommerce_app/features/main_layout/home/presentation/manager/categories_cubit/categories_cubit.dart';
+import 'package:ecommerce_app/features/main_layout/home/presentation/manager/products_cubit/products_cubit.dart';
 import 'package:ecommerce_app/features/main_layout/profile_tab/presentation/profile_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'home/presentation/home_tab.dart';
 
@@ -18,7 +23,14 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int currentIndex = 0;
   List<Widget> tabs = [
-    const HomeTab(),
+    MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (context) => CategoriesCubit(homeRepo: getIt.get<HomeRepo>()),
+      ),
+      BlocProvider(
+        create: (context) => ProductsCubit(homeRepo: getIt.get<HomeRepo>()),
+      ),
+    ], child: const HomeTab()),
     const CategoriesTab(),
     const FavouriteScreen(),
     const ProfileTab(),
