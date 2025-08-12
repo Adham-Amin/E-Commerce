@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:ecommerce_app/core/error/failure.dart';
+import 'package:ecommerce_app/core/services/shared_preferences_service.dart';
 import 'package:ecommerce_app/features/auth/data/data_source/auth_remote_data_source.dart';
 import 'package:ecommerce_app/features/auth/data/models/requests/signin_request.dart';
 import 'package:ecommerce_app/features/auth/data/models/requests/signup_request.dart';
@@ -16,6 +17,9 @@ class AuthRepoImpl extends AuthRepo {
       {required SigninRequest userData}) async {
     try {
       var data = await authRemoteDataSource.signIn(userData: userData);
+      var prefs = SharedPreferencesService();
+      await prefs.setToken(data.token!);
+      await prefs.setUser(data.user!);
       return Right(data);
     } catch (e) {
       if (e is DioException) {
@@ -31,6 +35,9 @@ class AuthRepoImpl extends AuthRepo {
       {required SignupRequest userData}) async {
     try {
       var data = await authRemoteDataSource.signUp(userData: userData);
+      var prefs = SharedPreferencesService();
+      await prefs.setToken(data.token!);
+      await prefs.setUser(data.user!);
       return Right(data);
     } catch (e) {
       if (e is DioException) {

@@ -1,8 +1,8 @@
-import 'user.dart';
+import 'user_info.dart';
 
 class AuthResponse {
 	String? message;
-	User? user;
+	UserInfo? user;
 	String? token;
 
 	AuthResponse({this.message, this.user, this.token});
@@ -11,7 +11,7 @@ class AuthResponse {
 				message: json['message'] as String?,
 				user: json['user'] == null
 						? null
-						: User.fromJson(json['user'] as Map<String, dynamic>),
+						: UserInfo.fromJson(json['user'] as Map<String, dynamic>),
 				token: json['token'] as String?,
 			);
 
