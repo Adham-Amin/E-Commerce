@@ -16,10 +16,18 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const MainLayout());
 
       case Routes.productsScreenRoute:
-        return MaterialPageRoute(builder: (_) => const ProductsScreen());
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (_) => ProductsScreen(
+            idCategory: args['idCategory'] as String,
+            idSubCategory: args['idSubCategory'] as String,
+          ),
+        );
 
       case Routes.productDetails:
-        return MaterialPageRoute(builder: (_) => const ProductDetails());
+        return MaterialPageRoute(builder: (_) =>  ProductDetails(
+          productId: settings.arguments as String,
+        ));
 
       case Routes.signInRoute:
         return MaterialPageRoute(builder: (_) => const SignInScreen());

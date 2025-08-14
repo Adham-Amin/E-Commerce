@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
@@ -14,6 +15,7 @@ class CustomProductWidget extends StatelessWidget {
   final double price;
   final double discountPercentage;
   final double rating;
+  final String productId;
 
   const CustomProductWidget({
     super.key,
@@ -24,7 +26,7 @@ class CustomProductWidget extends StatelessWidget {
     required this.description,
     required this.price,
     required this.discountPercentage,
-    required this.rating,
+    required this.rating, required this.productId,
   });
 
   String truncateTitle(String title) {
@@ -48,10 +50,8 @@ class CustomProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, Routes.productDetails),
+      onTap: () => Navigator.pushNamed(context, Routes.productDetails, arguments: productId),
       child: Container(
-        width: width * 0.4,
-        height: height * 0.3,
         decoration: BoxDecoration(
           border: Border.all(
             color: ColorManager.primary.withValues(alpha: 0.3),
@@ -63,32 +63,23 @@ class CustomProductWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              flex: 5,
+              flex: 4,
               child: Stack(
                 alignment: AlignmentDirectional.center,
                 children: [
-                  // Not working with the lastest flutter version
-
-                  // CachedNetworkImage(
-                  //   imageUrl: image,
-                  //   height: height * 0.15,
-                  //   width: double.infinity,
-                  //   fit: BoxFit.cover,
-                  //   placeholder: (context, url) =>
-                  //       const Center(child: CircularProgressIndicator()),
-                  //   errorWidget: (context, url, error) => const Icon(Icons.error),
-                  // ),
-                  // Image.network(
-                  //   image,
-                  //   fit: BoxFit.cover,
-                  // ),
                   ClipRRect(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(14.r)),
-                    child: Image.asset(
-                      image,
-                      fit: BoxFit.cover,
-                      width: width,
+                    borderRadius: BorderRadius.circular(16.r),
+                    child: CachedNetworkImage(
+                      imageUrl: image,
+                      height: height * 0.15,
+                      width: double.infinity,
+                      fit: BoxFit.fill,
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                   Positioned(
@@ -120,7 +111,7 @@ class CustomProductWidget extends StatelessWidget {
                         fontSize: 14.sp,
                       ),
                     ),
-                    SizedBox(height: height * 0.01),
+                    Expanded(child: SizedBox(height: 12.h)),
                     SizedBox(
                       width: width * 0.3,
                       child: Row(
@@ -140,7 +131,6 @@ class CustomProductWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // SizedBox(height: height * 0.005),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -163,7 +153,6 @@ class CustomProductWidget extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const Spacer(),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: InkWell(

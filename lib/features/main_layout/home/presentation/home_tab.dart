@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:ecommerce_app/core/widget/custom_loading.dart';
 import 'package:ecommerce_app/core/widget/product_card.dart';
 import 'package:ecommerce_app/features/main_layout/home/presentation/manager/categories_cubit/categories_cubit.dart';
 import 'package:ecommerce_app/features/main_layout/home/presentation/manager/products_cubit/products_cubit.dart';
@@ -89,9 +90,7 @@ class _HomeTabState extends State<HomeTab> {
                       child: Text(state.message),
                     );
                   } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return CustomLoading();
                   }
                 },
               ),
@@ -123,6 +122,7 @@ class _HomeTabState extends State<HomeTab> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return ProductCard(
+                            productId: state.products[index].id,
                             title: state.products[index].title,
                             description:
                                 'This is a short description of the product',
@@ -140,9 +140,7 @@ class _HomeTabState extends State<HomeTab> {
                       child: Text(state.message),
                     );
                   } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return CustomLoading();
                   }
                 },
               ),

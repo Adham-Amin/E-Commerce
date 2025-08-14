@@ -1,10 +1,15 @@
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/values_manager.dart';
+import 'package:ecommerce_app/core/widget/custom_loading.dart';
 import 'package:ecommerce_app/features/main_layout/categories/presentation/widgets/category_item.dart';
+import 'package:ecommerce_app/features/main_layout/home/presentation/manager/categories_cubit/categories_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoriesList extends StatefulWidget {
-  const CategoriesList({super.key});
+  const CategoriesList({super.key, required this.onTap});
+
+  final Function(String id, String title) onTap;
 
   @override
   State<CategoriesList> createState() => _CategoriesListState();
@@ -44,17 +49,33 @@ class _CategoriesListState extends State<CategoriesList> {
           topLeft: Radius.circular(AppSize.s12),
           bottomLeft: Radius.circular(AppSize.s12),
         ),
-        child: ListView.builder(
-          itemCount: 20,
-          itemBuilder: (context, index) => CategoryItem(index,
-              "Laptops & Electronics", selectedIndex == index, onItemClick),
+        child: BlocBuilder<CategoriesCubit, CategoriesState>(
+          builder: (context, state) {
+            if (state is CategoriesSuccess) {
+              return ListView.builder(
+                itemCount: state.categories.length,
+                itemBuilder: (context, index) => CategoryItem(
+                  index,
+                  state.categories[index].id,
+                  state.categories[index].name,
+                  selectedIndex == index,
+                  onItemClick,
+                ),
+              );
+            } else if (state is CategoriesError) {
+              return Center(child: Text(state.message));
+            } else {
+              return const CustomLoading();
+            }
+          },
         ),
       ),
     ));
   }
 
   // callback function to change the selected index
-  onItemClick(int index) {
+  onItemClick(int index, {required String id, required String title}) {
+    widget.onTap(id, title);
     setState(() {
       selectedIndex = index;
     });

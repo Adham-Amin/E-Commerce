@@ -7,13 +7,21 @@ import 'package:flutter/material.dart';
 class SubCategoryItem extends StatelessWidget {
   final String title;
   final String image;
-  final Function navigation;
-  const SubCategoryItem(this.title, this.image, this.navigation, {super.key});
+  final String idCategory;
+  final String idSubCategory;
+  const SubCategoryItem(
+      this.title, this.image, this.idCategory, this.idSubCategory,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, Routes.productsScreenRoute),
+      onTap: () {
+        Navigator.pushNamed(context, Routes.productsScreenRoute, arguments: {
+          'idCategory': idCategory,
+          'idSubCategory': idSubCategory
+        });
+      },
       overlayColor: WidgetStateProperty.all(Colors.transparent),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -35,6 +43,8 @@ class SubCategoryItem extends StatelessWidget {
           ),
           Text(
             title,
+            maxLines: 1,
+            textAlign: TextAlign.center,
             style: getRegularStyle(color: ColorManager.primary),
           )
         ],
