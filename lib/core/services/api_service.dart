@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ecommerce_app/core/services/shared_preferences_service.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class ApiService {
@@ -19,6 +20,18 @@ class ApiService {
         error: true,
         compact: true,
         maxWidth: 90,
+      ),
+    );
+
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final token = await SharedPreferencesService().getToken();
+          if (token != null && token.isNotEmpty) {
+            options.headers['token'] = token;
+          }
+          return handler.next(options);
+        },
       ),
     );
   }

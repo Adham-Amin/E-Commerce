@@ -1,9 +1,12 @@
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/core/services/service_locator.dart';
 import 'package:ecommerce_app/core/services/shared_preferences_service.dart';
+import 'package:ecommerce_app/features/cart/domain/repo/cart_repo.dart';
+import 'package:ecommerce_app/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/features/main_layout/home/domain/entities/category_entity.dart';
 import 'package:ecommerce_app/features/main_layout/home/domain/entities/products_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'core/routes_manager/route_generator.dart';
@@ -37,11 +40,14 @@ class MainApp extends StatelessWidget {
       designSize: const Size(430, 932),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: child,
-        onGenerateRoute: RouteGenerator.getRoute,
-        initialRoute: isLogin ? Routes.mainRoute : Routes.signInRoute,
+      builder: (context, child) => BlocProvider(
+        create: (context) => CartCubit(cartRepo: getIt.get<CartRepo>()),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: child,
+          onGenerateRoute: RouteGenerator.getRoute,
+          initialRoute: isLogin ? Routes.mainRoute : Routes.signInRoute,
+        ),
       ),
     );
   }

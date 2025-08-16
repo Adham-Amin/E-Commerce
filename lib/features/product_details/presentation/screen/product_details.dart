@@ -4,6 +4,7 @@ import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/services/service_locator.dart';
 import 'package:ecommerce_app/core/widget/custom_elevated_button.dart';
 import 'package:ecommerce_app/core/widget/custom_loading.dart';
+import 'package:ecommerce_app/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/features/product_details/domain/repo/products_details_repo.dart';
 import 'package:ecommerce_app/features/product_details/presentation/manager/cubit/product_details_cubit.dart';
 import 'package:ecommerce_app/features/product_details/presentation/widgets/product_color.dart';
@@ -28,14 +29,17 @@ class ProductDetails extends StatelessWidget {
       create: (context) => ProductDetailsCubit(
         productDetailsRepo: getIt.get<ProductDetailsRepo>(),
       ),
-      child: ProductDetailsBody(productId: productId,),
+      child: ProductDetailsBody(
+        productId: productId,
+      ),
     );
   }
 }
 
 class ProductDetailsBody extends StatefulWidget {
   const ProductDetailsBody({
-    super.key, required this.productId,
+    super.key,
+    required this.productId,
   });
 
   final String productId;
@@ -44,139 +48,171 @@ class ProductDetailsBody extends StatefulWidget {
 }
 
 class _ProductDetailsBodyState extends State<ProductDetailsBody> {
-
   @override
   void initState() {
     context.read<ProductDetailsCubit>().getProductDetails(
-      productId: widget.productId,
-    );
+          productId: widget.productId,
+        );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Product Details',
-          style: getMediumStyle(color: ColorManager.appBarTitleColor)
-              .copyWith(fontSize: 20.sp),
-        ),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: ImageIcon(
-                AssetImage(IconsAssets.icSearch),
-                color: ColorManager.primary,
-              )),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.shopping_cart_outlined,
-                color: ColorManager.primary,
-              )),
-        ],
-      ),
-      body: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-        builder: (context, state) {
-          if (state is ProductDetailsSuccess) {
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 50.h),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ProductSlider(
-                          items: state.product.images
-                              .map((image) => ProductItem(imageUrl: image))
-                              .toList(),
-                          initialIndex: 0),
-                      SizedBox(
-                        height: 24.h,
-                      ),
-                      ProductLabel(
-                          productName: state.product.title,
-                          productPrice: 'EGP ${state.product.price}'),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      ProductRating(
-                          productBuyers: state.product.sold.toString(),
-                          productRating:
-                              '${state.product.rating} (${state.product.quantity})'),
-                      SizedBox(
-                        height: 16.h,
-                      ),
-                      ProductDescription(
-                        productDescription: state.product.description,
-                      ),
-                      ProductSize(
-                        size: const [35, 38, 39, 40],
-                        onSelected: () {},
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Text('Color',
-                          style: getMediumStyle(
-                                  color: ColorManager.appBarTitleColor)
-                              .copyWith(fontSize: 18.sp)),
-                      ProductColor(color: const [
-                        Colors.red,
-                        Colors.blueAccent,
-                        Colors.green,
-                        Colors.yellow,
-                      ], onSelected: () {}),
-                      SizedBox(
-                        height: 48.h,
-                      ),
-                      Row(
+    return BlocBuilder<CartCubit, CartState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(
+              'Product Details',
+              style: getMediumStyle(color: ColorManager.appBarTitleColor)
+                  .copyWith(fontSize: 20.sp),
+            ),
+            actions: [
+              IconButton(
+                  onPressed: () {},
+                  icon: ImageIcon(
+                    AssetImage(IconsAssets.icSearch),
+                    color: ColorManager.primary,
+                  )),
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.shopping_cart_outlined,
+                    color: ColorManager.primary,
+                  )),
+            ],
+          ),
+          body: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+            builder: (context, state) {
+              if (state is ProductDetailsSuccess) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(left: 16.w, right: 16.w, bottom: 50.h),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            children: [
-                              Text(
-                                'Total price',
-                                style: getMediumStyle(
-                                        color: ColorManager.primary
-                                            .withValues(alpha: .6))
-                                    .copyWith(fontSize: 18.sp),
-                              ),
-                              SizedBox(
-                                height: 12.h,
-                              ),
-                              Text(
-                                  'EGP ${state.product.price}',
-                                  style: getMediumStyle(
-                                          color: ColorManager.appBarTitleColor)
-                                      .copyWith(fontSize: 18.sp))
-                            ],
+                          ProductSlider(
+                              items: state.product.images
+                                  .map((image) => ProductItem(imageUrl: image))
+                                  .toList(),
+                              initialIndex: 0),
+                          SizedBox(
+                            height: 24.h,
+                          ),
+                          ProductLabel(
+                              productName: state.product.title,
+                              productPrice: 'EGP ${state.product.price}'),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          ProductRating(
+                              productBuyers: state.product.sold.toString(),
+                              productRating:
+                                  '${state.product.rating} (${state.product.quantity})'),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          ProductDescription(
+                            productDescription: state.product.description,
+                          ),
+                          ProductSize(
+                            size: const [35, 38, 39, 40],
+                            onSelected: () {},
                           ),
                           SizedBox(
-                            width: 33.w,
+                            height: 20.h,
                           ),
-                          Expanded(
-                            child: CustomElevatedButton(
-                              label: 'Add to cart',
-                              onTap: () {},
-                              prefixIcon: Icon(
-                                Icons.add_shopping_cart_outlined,
-                                color: ColorManager.white,
+                          Text('Color',
+                              style: getMediumStyle(
+                                      color: ColorManager.appBarTitleColor)
+                                  .copyWith(fontSize: 18.sp)),
+                          ProductColor(color: const [
+                            Colors.red,
+                            Colors.blueAccent,
+                            Colors.green,
+                            Colors.yellow,
+                          ], onSelected: () {}),
+                          SizedBox(
+                            height: 48.h,
+                          ),
+                          Row(
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    'Total price',
+                                    style: getMediumStyle(
+                                            color: ColorManager.primary
+                                                .withValues(alpha: .6))
+                                        .copyWith(fontSize: 18.sp),
+                                  ),
+                                  SizedBox(
+                                    height: 12.h,
+                                  ),
+                                  Text('EGP ${state.product.price}',
+                                      style: getMediumStyle(
+                                              color:
+                                                  ColorManager.appBarTitleColor)
+                                          .copyWith(fontSize: 18.sp))
+                                ],
                               ),
-                            ),
+                              SizedBox(
+                                width: 33.w,
+                              ),
+                              BlocProvider.of<CartCubit>(context)
+                                      .isProductInCart(state.product.id)
+                                  ? Expanded(
+                                      child: CustomElevatedButton(
+                                        label: 'Delete to cart',
+                                        onTap: () {
+                                          setState(() {
+                                            context
+                                                .read<CartCubit>()
+                                                .removeProductFromCart(
+                                                    productId:
+                                                        state.product.id);
+                                          });
+                                        },
+                                        prefixIcon: Icon(
+                                          Icons.delete_outline,
+                                          color: ColorManager.white,
+                                        ),
+                                      ),
+                                    )
+                                  : Expanded(
+                                      child: CustomElevatedButton(
+                                        label: 'Add to cart',
+                                        onTap: () {
+                                          setState(() {
+                                            context
+                                                .read<CartCubit>()
+                                                .addProductToCart(
+                                                    productId:
+                                                        state.product.id);
+                                          });
+                                        },
+                                        prefixIcon: Icon(
+                                          Icons.add_shopping_cart_outlined,
+                                          color: ColorManager.white,
+                                        ),
+                                      ),
+                                    )
+                            ],
                           )
-                        ],
-                      )
-                    ]),
-              ),
-            );
-          } else if (state is ProductDetailsError) {
-            return Center(child: Text(state.message));
-          } else {
-            return CustomLoading();
-          }
-        },
-      ),
+                        ]),
+                  ),
+                );
+              } else if (state is ProductDetailsError) {
+                return Center(child: Text(state.message));
+              } else {
+                return CustomLoading();
+              }
+            },
+          ),
+        );
+      },
     );
   }
 }

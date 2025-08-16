@@ -22,13 +22,14 @@ class ProductCounter extends StatelessWidget {
       ),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 7.h),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           InkWell(
               onTap: () {
                 remove.call(productCounter);
               },
               child: Icon(
-                Icons.remove_circle_outline,
+                Icons.delete_outline,
                 size: 20.w,
                 color: ColorManager.white,
               )),

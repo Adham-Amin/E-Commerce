@@ -2,10 +2,12 @@ import 'package:ecommerce_app/core/resources/assets_manager.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
+import 'package:ecommerce_app/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   final String image;
   final String title;
   final int price;
@@ -21,8 +23,15 @@ class ProductCard extends StatelessWidget {
     required this.price,
     required this.rating,
     required this.priceBeforeDiscound,
-    required this.description, required this.productId,
+    required this.description,
+    required this.productId,
   });
+
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
   String truncateTitle(String title) {
     List<String> words = title.split(' ');
     if (words.length <= 4) {
@@ -37,7 +46,8 @@ class ProductCard extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return InkWell(
-      onTap:  () => Navigator.pushNamed(context, Routes.productDetails, arguments: productId),
+      onTap: () => Navigator.pushNamed(context, Routes.productDetails,
+          arguments: widget.productId),
       child: SizedBox(
         width: 200.w,
         height: 280.h,
@@ -74,7 +84,7 @@ class ProductCard extends StatelessWidget {
               //     ),
               //   ),
               // ),
-      
+
               Expanded(
                 flex: 1,
                 child: Stack(
@@ -90,7 +100,7 @@ class ProductCard extends StatelessWidget {
                         child: AspectRatio(
                           aspectRatio: 16 / 9,
                           child: Image.network(
-                            image,
+                            widget.image,
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -134,14 +144,14 @@ class ProductCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        truncateTitle(title),
+                        truncateTitle(widget.title),
                         maxLines: 2,
                         style: getMediumStyle(
                           color: ColorManager.primary,
                           fontSize: 16.sp,
                         ),
                       ),
-                       Expanded(child: SizedBox(height: 8.h)),
+                      Expanded(child: SizedBox(height: 8.h)),
                       // Text(
                       //   truncateTitle(description),
                       //   style: getRegularStyle(
@@ -154,7 +164,7 @@ class ProductCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "EGP $price",
+                            "EGP ${widget.price}",
                             softWrap: true,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -164,7 +174,7 @@ class ProductCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "$priceBeforeDiscound EGP ",
+                            "${widget.priceBeforeDiscound} EGP ",
                             style: getTextWithLine(),
                           ),
                         ],
@@ -183,7 +193,7 @@ class ProductCard extends StatelessWidget {
                               ),
                               SizedBox(width: 4.w),
                               Text(
-                                "$rating",
+                                "${widget.rating}",
                                 style: getRegularStyle(
                                   color: ColorManager.primary,
                                   fontSize: 14.sp,
@@ -191,14 +201,34 @@ class ProductCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          InkWell(
-                            onTap: () {},
-                            child: Icon(
-                              Icons.add_circle_rounded,
-                              color: ColorManager.primary,
-                              size: 36,
-                            ),
-                          ),
+                          BlocProvider.of<CartCubit>(context)
+                                  .isProductInCart(widget.productId)
+                              ? InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      BlocProvider.of<CartCubit>(context)
+                                        .removeProductFromCart(productId: widget.productId);
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.remove_circle_rounded,
+                                    color: ColorManager.primary,
+                                    size: 36,
+                                  ),
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      BlocProvider.of<CartCubit>(context)
+                                        .addProductToCart(productId: widget.productId);
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.add_circle_rounded,
+                                    color: ColorManager.primary,
+                                    size: 36,
+                                  ),
+                                )
                         ],
                       ),
                     ],

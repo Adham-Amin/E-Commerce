@@ -4,6 +4,9 @@ import 'package:ecommerce_app/features/auth/data/data_source/auth_remote_data_so
 import 'package:ecommerce_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:ecommerce_app/features/auth/domain/repos/auth_repo.dart';
 import 'package:ecommerce_app/features/auth/presentation/manager/auth_cubit/auth_cubit.dart';
+import 'package:ecommerce_app/features/cart/data/data_sources/cart_remote_data_source.dart';
+import 'package:ecommerce_app/features/cart/data/repo/cart_repo_impl.dart';
+import 'package:ecommerce_app/features/cart/domain/repo/cart_repo.dart';
 import 'package:ecommerce_app/features/main_layout/categories/data/data_sources/categories_remote_data_source.dart';
 import 'package:ecommerce_app/features/main_layout/categories/data/repos/categories_repo_impl.dart';
 import 'package:ecommerce_app/features/main_layout/categories/domain/repos/categories_repo.dart';
@@ -64,6 +67,16 @@ Future<void> serverLocator() async {
   getIt.registerSingleton<ProductDetailsRepo>(
     ProductDetailsRepoImpl(
       productDetailsRemoteDataSource: getIt<ProductDetailsRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerSingleton<CartRemoteDataSource>(
+    CartRemoteDataSourceImpl(apiService: getIt<ApiService>()),
+  );
+
+  getIt.registerSingleton<CartRepo>(
+    CartRepoImpl(
+      remoteDataSource: getIt<CartRemoteDataSource>(),
     ),
   );
 }
