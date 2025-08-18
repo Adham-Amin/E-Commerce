@@ -3,6 +3,7 @@ import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/core/widget/heart_button.dart';
+import 'package:ecommerce_app/features/main_layout/home/domain/entities/products_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,7 +16,7 @@ class CustomProductWidget extends StatelessWidget {
   final double price;
   final double discountPercentage;
   final double rating;
-  final String productId;
+  final ProductsEntity product;
 
   const CustomProductWidget({
     super.key,
@@ -26,7 +27,7 @@ class CustomProductWidget extends StatelessWidget {
     required this.description,
     required this.price,
     required this.discountPercentage,
-    required this.rating, required this.productId,
+    required this.rating, required this.product,
   });
 
   String truncateTitle(String title) {
@@ -50,7 +51,8 @@ class CustomProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, Routes.productDetails, arguments: productId),
+      onTap: () => Navigator.pushNamed(context, Routes.productDetails,
+          arguments: product),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
@@ -85,7 +87,10 @@ class CustomProductWidget extends StatelessWidget {
                   Positioned(
                       top: height * 0.01,
                       right: width * 0.02,
-                      child: HeartButton(onTap: () {})),
+                      child: HeartButton(
+                        product: product,
+                        id: product.id,
+                      )),
                 ],
               ),
             ),

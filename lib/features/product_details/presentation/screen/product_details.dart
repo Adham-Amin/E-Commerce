@@ -5,6 +5,7 @@ import 'package:ecommerce_app/core/services/service_locator.dart';
 import 'package:ecommerce_app/core/widget/custom_elevated_button.dart';
 import 'package:ecommerce_app/core/widget/custom_loading.dart';
 import 'package:ecommerce_app/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
+import 'package:ecommerce_app/features/main_layout/home/domain/entities/products_entity.dart';
 import 'package:ecommerce_app/features/product_details/domain/repo/products_details_repo.dart';
 import 'package:ecommerce_app/features/product_details/presentation/manager/cubit/product_details_cubit.dart';
 import 'package:ecommerce_app/features/product_details/presentation/widgets/product_color.dart';
@@ -19,9 +20,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductDetails extends StatelessWidget {
-  const ProductDetails({super.key, required this.productId});
+  const ProductDetails({super.key, required this.product});
 
-  final String productId;
+  final ProductsEntity product;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class ProductDetails extends StatelessWidget {
         productDetailsRepo: getIt.get<ProductDetailsRepo>(),
       ),
       child: ProductDetailsBody(
-        productId: productId,
+        product: product,
       ),
     );
   }
@@ -39,10 +40,10 @@ class ProductDetails extends StatelessWidget {
 class ProductDetailsBody extends StatefulWidget {
   const ProductDetailsBody({
     super.key,
-    required this.productId,
+    required this.product,
   });
 
-  final String productId;
+  final ProductsEntity product;
   @override
   State<ProductDetailsBody> createState() => _ProductDetailsBodyState();
 }
@@ -51,7 +52,7 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
   @override
   void initState() {
     context.read<ProductDetailsCubit>().getProductDetails(
-          productId: widget.productId,
+          productId: widget.product.id,
         );
     super.initState();
   }
@@ -94,9 +95,20 @@ class _ProductDetailsBodyState extends State<ProductDetailsBody> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ProductSlider(
-                              items: state.product.images
-                                  .map((image) => ProductItem(imageUrl: image))
-                                  .toList(),
+                              items: state.product.images.map((image) {
+                                ProductsEntity productEntity = ProductsEntity(
+                                  id: state.product.id,
+                                  title: state.product.title,
+                                  price: state.product.price,
+                                  image: state.product.images[0],
+                                  rating: state.product.rating,
+                                );
+
+                                return ProductItem(
+                                  imageUrl: image,
+                                  product: productEntity,
+                                );
+                              }).toList(),
                               initialIndex: 0),
                           SizedBox(
                             height: 24.h,

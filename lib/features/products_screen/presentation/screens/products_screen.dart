@@ -76,7 +76,7 @@ class _ProductScreenViewState extends State<ProductScreenView> {
                         ),
                         itemBuilder: (context, index) {
                           return CustomProductWidget(
-                            productId: state.products[index].id,
+                            product: state.products[index],
                             image: state.products[index].image,
                             title: state.products[index].title,
                             price: state.products[index].price.toDouble(),

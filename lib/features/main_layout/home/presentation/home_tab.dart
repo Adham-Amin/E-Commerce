@@ -33,8 +33,6 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     super.initState();
     _startImageSwitching();
-    context.read<CategoriesCubit>().getCategories();
-    context.read<ProductsCubit>().getProducts();
   }
 
   void _startImageSwitching() {
@@ -122,6 +120,7 @@ class _HomeTabState extends State<HomeTab> {
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return ProductCard(
+                            product: state.products[index],
                             productId: state.products[index].id,
                             title: state.products[index].title,
                             description:

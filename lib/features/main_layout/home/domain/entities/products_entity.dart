@@ -20,4 +20,5 @@ class ProductsEntity {
     required this.price,
     required this.rating,
   });
+  
 }

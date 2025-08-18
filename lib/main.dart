@@ -3,8 +3,16 @@ import 'package:ecommerce_app/core/services/service_locator.dart';
 import 'package:ecommerce_app/core/services/shared_preferences_service.dart';
 import 'package:ecommerce_app/features/cart/domain/repo/cart_repo.dart';
 import 'package:ecommerce_app/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
+import 'package:ecommerce_app/features/main_layout/categories/domain/repos/categories_repo.dart';
+import 'package:ecommerce_app/features/main_layout/categories/presentation/manager/sub_categories_cubit/sub_categories_cubit.dart';
+import 'package:ecommerce_app/features/main_layout/favourite/data/data_sources/local_watchlist_data_source.dart';
+import 'package:ecommerce_app/features/main_layout/favourite/data/repos/watchlist_repo_impl.dart';
+import 'package:ecommerce_app/features/main_layout/favourite/presentation/cubit/wishlist_cubit.dart';
 import 'package:ecommerce_app/features/main_layout/home/domain/entities/category_entity.dart';
 import 'package:ecommerce_app/features/main_layout/home/domain/entities/products_entity.dart';
+import 'package:ecommerce_app/features/main_layout/home/domain/repos/home_repo.dart';
+import 'package:ecommerce_app/features/main_layout/home/presentation/manager/categories_cubit/categories_cubit.dart';
+import 'package:ecommerce_app/features/main_layout/home/presentation/manager/products_cubit/products_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +26,7 @@ void main() async {
   Hive.registerAdapter(ProductsEntityAdapter());
   await Hive.openBox<CategoryEntity>('categories');
   await Hive.openBox<ProductsEntity>('products');
+  await Hive.openBox<ProductsEntity>('watchlist');
   serverLocator();
   await SharedPreferencesService.init();
 
@@ -40,8 +49,33 @@ class MainApp extends StatelessWidget {
       designSize: const Size(430, 932),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => BlocProvider(
-        create: (context) => CartCubit(cartRepo: getIt.get<CartRepo>()),
+      builder: (context, child) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                ProductsCubit(homeRepo: getIt.get<HomeRepo>())..getProducts(),
+          ),
+          BlocProvider(
+            create: (context) =>
+                CategoriesCubit(homeRepo: getIt.get<HomeRepo>())
+                  ..getCategories(),
+          ),
+          BlocProvider(
+            create: (context) =>
+                SubCategoriesCubit(categoriesRepo: getIt.get<CategoriesRepo>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                CartCubit(cartRepo: getIt.get<CartRepo>())..getCart(),
+          ),
+          BlocProvider(
+            create: (context) => WatchlistCubit(
+              watchlistRepo: WatchlistRepoImpl(
+                localWatchlistDataSource: LocalWatchlistDataSourceImpl(),
+              ),
+            )..loadWatchlist(),
+          ),
+        ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: child,

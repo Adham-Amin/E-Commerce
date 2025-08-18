@@ -3,6 +3,9 @@ import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/features/cart/presentation/manager/cart_cubit/cart_cubit.dart';
+import 'package:ecommerce_app/features/main_layout/favourite/presentation/cubit/wishlist_cubit.dart';
+import 'package:ecommerce_app/features/main_layout/favourite/presentation/cubit/wishlist_state.dart';
+import 'package:ecommerce_app/features/main_layout/home/domain/entities/products_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +18,7 @@ class ProductCard extends StatefulWidget {
   final double priceBeforeDiscound;
   final double rating;
   final String productId;
+  final ProductsEntity product;
 
   const ProductCard({
     super.key,
@@ -25,6 +29,7 @@ class ProductCard extends StatefulWidget {
     required this.priceBeforeDiscound,
     required this.description,
     required this.productId,
+    required this.product,
   });
 
   @override
@@ -124,12 +129,26 @@ class _ProductCardState extends State<ProductCard> {
                             ),
                           ],
                         ),
-                        child: InkWell(
-                          onTap: () {},
-                          child: Image.asset(
-                            IconsAssets.icWithList,
-                            color: ColorManager.primary,
-                          ),
+                        child: BlocBuilder<WatchlistCubit, WatchlistState>(
+                          builder: (context, state) {
+                            bool isInWishlist = false;
+                            if (state is WatchlistLoaded) {
+                              isInWishlist = state.watchlist
+                                  .any((p) => p.id == widget.product.id);
+                            }
+                            return InkWell(
+                              onTap: () {
+                                BlocProvider.of<WatchlistCubit>(context)
+                                    .toggleWatchlist(widget.product);
+                              },
+                              child: Image.asset(
+                                isInWishlist
+                                    ? IconsAssets.icClickedHeart
+                                    : IconsAssets.icWithList,
+                                color: ColorManager.primary,
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -207,7 +226,8 @@ class _ProductCardState extends State<ProductCard> {
                                   onTap: () {
                                     setState(() {
                                       BlocProvider.of<CartCubit>(context)
-                                        .removeProductFromCart(productId: widget.productId);
+                                          .removeProductFromCart(
+                                              productId: widget.productId);
                                     });
                                   },
                                   child: Icon(
@@ -220,7 +240,8 @@ class _ProductCardState extends State<ProductCard> {
                                   onTap: () {
                                     setState(() {
                                       BlocProvider.of<CartCubit>(context)
-                                        .addProductToCart(productId: widget.productId);
+                                          .addProductToCart(
+                                              productId: widget.productId);
                                     });
                                   },
                                   child: Icon(

@@ -3,6 +3,7 @@ import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/resources/values_manager.dart';
 import 'package:ecommerce_app/features/main_layout/favourite/presentation/widgets/custom_txt_widget.dart';
+import 'package:ecommerce_app/features/main_layout/home/domain/entities/products_entity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class FavouriteItemDetails extends StatelessWidget {
   const FavouriteItemDetails({required this.product, super.key});
 
-  final Map<String, dynamic> product;
+  final ProductsEntity product;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class FavouriteItemDetails extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         CustomTextWgt(
-          data: product["title"],
+          data: product.title,
           textStyle: getSemiBoldStyle(
               color: ColorManager.primaryDark, fontSize: AppSize.s18.sp),
         ),
@@ -31,10 +32,11 @@ class FavouriteItemDetails extends StatelessWidget {
               width: AppSize.s14.w,
               height: AppSize.s14.h,
               decoration: BoxDecoration(
-                  color: product["color"], shape: BoxShape.circle),
+                  color: Color.fromARGB(255, 23, 23, 24),
+                  shape: BoxShape.circle),
             ),
             CustomTextWgt(
-              data: (product["color"] as Color).colorName,
+              data: (Color.fromARGB(255, 23, 23, 24)).colorName,
               textStyle: getMediumStyle(
                   color: ColorManager.primaryDark, fontSize: AppSize.s14.sp),
             ),
@@ -43,36 +45,35 @@ class FavouriteItemDetails extends StatelessWidget {
         Row(
           children: [
             CustomTextWgt(
-              data: 'EGP ${product["finalPrice"]}  ',
+              data: 'EGP ${product.price}  ',
               textStyle: getSemiBoldStyle(
                       color: ColorManager.primaryDark, fontSize: AppSize.s18.sp)
                   .copyWith(
                 letterSpacing: 0.17,
               ),
             ),
-            product["salePrice"] == null
-                ? const SizedBox.shrink()
-                : Flexible(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          height: AppSize.s10.h,
-                        ),
-                        CustomTextWgt(
-                            data: 'EGP ${product["salePrice"]}',
-                            textStyle: getMediumStyle(
-                                    color: ColorManager.appBarTitleColor
-                                        .withValues(alpha: .6))
-                                .copyWith(
-                                    letterSpacing: 0.17,
-                                    decoration: TextDecoration.lineThrough,
-                                    color: ColorManager.appBarTitleColor
-                                        .withValues(alpha: .6),
-                                    fontSize: AppSize.s10.sp)),
-                      ],
-                    ),
+            // ignore: unnecessary_null_comparison
+            Flexible(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    height: AppSize.s10.h,
                   ),
+                  CustomTextWgt(
+                      data: 'EGP 1,500',
+                      textStyle: getMediumStyle(
+                              color: ColorManager.appBarTitleColor
+                                  .withValues(alpha: .6))
+                          .copyWith(
+                              letterSpacing: 0.17,
+                              decoration: TextDecoration.lineThrough,
+                              color: ColorManager.appBarTitleColor
+                                  .withValues(alpha: .6),
+                              fontSize: AppSize.s10.sp)),
+                ],
+              ),
+            ),
           ],
         ),
       ],
